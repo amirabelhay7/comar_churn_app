@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.log
+
+# Environnements virtuels
+venv/
+.venv/
+env/
+
+# Flask / données locales
+instance/
+*.db
+
+# Éditeur / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Secrets
+.env
+*.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# NE PAS pousser les modèles .pkl
+models/*.pkl

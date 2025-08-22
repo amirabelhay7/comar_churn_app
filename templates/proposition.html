@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Proposition – COMAR{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white fw-semibold">
+        ✉️ Envoyer une proposition à COMAR
+      </div>
+      <div class="card-body">
+        {% if errors %}
+          <div class="alert alert-danger">
+            <ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+          </div>
+        {% endif %}
+
+        <form method="post" class="row g-3">
+          <h6 class="text-secondary mt-2">Informations employé</h6>
+          <div class="col-md-6">
+            <label class="form-label">Nom & prénom *</label>
+            <input name="employe_nom" class="form-control" value="{{ (initial.employe_nom or '') }}">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">E-mail employé *</label>
+            <input name="employe_mail" type="email" class="form-control" value="{{ (initial.employe_mail or '') }}">
+          </div>
+
+          <hr class="mt-4">
+
+          <h6 class="text-secondary">Données client (prédiction)</h6>
+          <div class="col-md-6">
+            <label class="form-label">Identifiant client / Contrat *</label>
+            <input name="client_id" class="form-control" placeholder="ex: 31027340 – NOM Prénom">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Probabilité (%) *</label>
+            <input name="proba" class="form-control" value="{{ initial.proba }}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Classe</label>
+            <input name="classe" class="form-control" value="{{ initial.classe }}">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Pack</label>
+            <input name="pack" class="form-control" value="{{ initial.pack }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Prime (TND)</label>
+            <input name="prime" class="form-control" value="{{ initial.prime }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Ancienneté (ans)</label>
+            <input name="anciennete" class="form-control" value="{{ initial.anciennete }}">
+          </div>
+
+          <hr class="mt-4">
+
+          <h6 class="text-secondary">Action proposée</h6>
+          <div class="col-md-6">
+            <label class="form-label">Type d’action</label>
+            <select name="action" class="form-select">
+              <option value="Appel de fidélisation">Appel de fidélisation</option>
+              <option value="Offre remise">Offre remise</option>
+              <option value="Changement de pack">Changement de pack</option>
+              <option value="Echéancier de paiement">Échéancier de paiement</option>
+              <option value="Rendez-vous agence">Rendez-vous agence</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Remise (%)</label>
+            <input name="remise" class="form-control" placeholder="ex: 10">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Échéancier (mois)</label>
+            <input name="echeance" class="form-control" placeholder="ex: 6">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Commentaire interne</label>
+            <textarea name="commentaire" rows="4" class="form-control"
+              placeholder="Résumé du contexte, arguments, prochaine étape…"></textarea>
+          </div>
+
+          <div class="col-12 d-flex gap-2 mt-2">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Annuler</a>
+            <button class="btn btn-primary" type="submit">Envoyer à COMAR</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="alert alert-info small">
+      <strong>Astuce :</strong> viens depuis la page de prédiction, le formulaire sera pré-rempli.
+    </div>
+  </div>
+</div>
+{% endblock %}

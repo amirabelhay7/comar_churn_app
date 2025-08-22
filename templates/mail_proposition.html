@@ -1,0 +1,26 @@
+<!doctype html>
+<html><body style="font-family:Arial,Helvetica,sans-serif;font-size:14px;">
+  <h3 style="margin-bottom:0;">Proposition employé – Client {{ client_id }}</h3>
+  <p style="margin-top:4px;color:#666;">Envoyée par {{ employe_nom }} &lt;{{ employe_mail }}&gt;</p>
+
+  <table cellpadding="6" cellspacing="0" style="border-collapse:collapse;">
+    <tr><td><b>Probabilité résiliation</b></td><td>{{ proba }}%</td></tr>
+    <tr><td><b>Classe</b></td><td>{{ classe }}</td></tr>
+    <tr><td><b>Pack actuel</b></td><td>{{ pack }}</td></tr>
+    <tr><td><b>Prime</b></td><td>{{ prime }} TND</td></tr>
+    <tr><td><b>Ancienneté</b></td><td>{{ anciennete }} ans</td></tr>
+  </table>
+
+  <hr>
+
+  <p><b>Action proposée :</b> {{ action }}</p>
+  {% if remise %}<p><b>Remise :</b> {{ remise }} %</p>{% endif %}
+  {% if echeance %}<p><b>Échéancier :</b> {{ echeance }} mois</p>{% endif %}
+  {% if commentaire %}
+    <p><b>Commentaire :</b><br>{{ commentaire|replace('\n','<br>')|safe }}</p>
+  {% endif %}
+
+  <p style="color:#888;font-size:12px;margin-top:24px;">
+    Email généré automatiquement par l’application interne de prédiction de résiliation.
+  </p>
+</body></html>

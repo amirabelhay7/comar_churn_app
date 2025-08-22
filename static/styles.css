@@ -1,0 +1,58 @@
+/* Palette inspirée COMAR */
+:root{
+  --comar-navy:#0b3c66;
+  --comar-blue:#0d5fa3;
+  --comar-accent:#2cc6b7;   /* touche moderne */
+  --comar-light:#f6f9fc;
+}
+
+body{ background:#fff; }
+
+.topbar{ background:var(--comar-blue); }
+
+.comar-nav{
+  background:var(--comar-navy);
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+/* Bandeau hero (dégradé). Tu peux mettre une image :
+   .hero{ background: url('/static/hero.jpg') center/cover no-repeat; } */
+.hero{
+  background:linear-gradient(120deg, var(--comar-navy), var(--comar-blue));
+  color:#fff;
+}
+
+/* Boutons */
+.btn-primary{
+  background:var(--comar-blue);
+  border-color:var(--comar-blue);
+}
+.btn-primary:hover{
+  background:#0c5290;
+  border-color:#0c5290;
+}
+
+/* Cartes & placeholders */
+.placeholder-card{
+  min-height: 320px;
+  background:var(--comar-light);
+  border:1px dashed #dfe7f1;
+  border-radius:.5rem;
+}
+.card{
+  border:0;
+  border-radius:.75rem;
+}
+.card-header{
+  border-bottom:1px solid #eef2f6;
+}
+
+/* Progress bar dégradée */
+.progress-bar.bg-gradient{
+  background:linear-gradient(90deg, #ff5b6a, #fdb04e, #2cc6b7);
+}
+
+/* Footer */
+.comar-footer{
+  background:var(--comar-navy);
+}

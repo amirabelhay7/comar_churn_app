@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}COMAR – Prédiction{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h2 class="h5 mb-0"><i class="fa-solid fa-sliders me-2 text-primary"></i>Simuler un client</h2>
+      </div>
+      <div class="card-body">
+
+        {% if erreurs and erreurs|length %}
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              {% for e in erreurs %}<li>{{ e }}</li>{% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <form method="post" class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Montant de la prime (TND)</label>
+            <input type="text" name="montant" class="form-control" placeholder="ex: 1200.50" required>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Ancienneté (années)</label>
+            <input type="text" name="anciennete" class="form-control" placeholder="ex: 5" required>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Code sexe</label>
+            <select name="code_sexe" class="form-select">
+              <option value="M">M</option>
+              <option value="F">F</option>
+              <option value="Inconnu">Inconnu</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Statut matrimonial</label>
+            <select name="statut_mat" class="form-select">
+              <option value="Married">Married</option>
+              <option value="Celib">Celib</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Veuf(ve)">Veuf(ve)</option>
+              <option value="Inconnu">Inconnu</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Nature du dossier</label>
+            <select name="nature" class="form-select">
+              <option value="Particulier">Particulier</option>
+              <option value="Professionnel">Professionnel</option>
+              <option value="Inconnu">Inconnu</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Prime anormale ?</label>
+            <select name="prime_anorm" class="form-select">
+              <option value="Non">Non</option>
+              <option value="Oui">Oui</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Pack</label>
+            <select name="pack" class="form-select">
+              <option value="RC">RC</option>
+              <option value="Tous Risques">Tous Risques</option>
+              <option value="Dommage et Collision">Dommage et Collision</option>
+            </select>
+          </div>
+
+          <div class="col-md-12 text-end">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-magnifying-glass-chart me-2"></i>Prédire
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    {% if proba is not none %}
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h2 class="h5 mb-0">
+            <i class="fa-solid fa-square-poll-vertical me-2 text-primary"></i>
+            Résultat
+          </h2>
+        </div>
+        <div class="card-body">
+          <!-- Probabilité -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="fw-semibold">Probabilité de résiliation</div>
+            <div class="fs-4 fw-bold text-primary">{{ proba }}%</div>
+          </div>
+
+          <div class="progress mb-3" style="height: 12px;">
+            <div class="progress-bar bg-gradient" role="progressbar"
+                 style="width: {{ proba }}%;" aria-valuenow="{{ proba }}" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="text-muted small mb-3">Seuil de risque : <strong>{{ seuil }}%</strong></div>
+
+          <!-- Classe prédite -->
+          <div class="mb-3">
+            <div class="fw-semibold">Classe prédite</div>
+            <span class="badge {% if classe == 'À risque' %}bg-danger{% else %}bg-success{% endif %} px-3 py-2 fs-6">
+              {{ classe }}
+            </span>
+          </div>
+
+          <!-- Bouton proposer une action -->
+          <div class="mt-4 text-center">
+            <a class="btn btn-outline-primary"
+               href="{{ url_for('proposition',
+                                 proba=proba,
+                                 classe=classe,
+                                 pack=request.form.get('pack'),
+                                 prime=request.form.get('montant'),
+                                 anciennete=request.form.get('anciennete')) }}">
+              ✉️ Proposer une action (mail COMAR)
+            </a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="placeholder-card d-flex align-items-center justify-content-center text-muted">
+        <div class="text-center">
+          <i class="fa-solid fa-chart-simple fa-2x mb-2"></i>
+          <p class="mb-0">Lance une prédiction pour voir les résultats ici.</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

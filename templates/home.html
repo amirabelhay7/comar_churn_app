@@ -14,7 +14,6 @@
       <img src="{{ url_for('static', filename='img/slide1.jpg') }}" class="d-block w-100" alt="COMAR - Slide 1" style="max-height: 460px; object-fit: cover;">
       <div class="carousel-caption d-none d-md-block text-start">
         <h2 class="fw-bold">COMAR Assurances</h2>
-        
       </div>
     </div>
     <div class="carousel-item">
@@ -45,6 +44,67 @@
 {% endblock %}
 
 {% block content %}
+
+<!-- Présentation COMAR (ajouté) -->
+<section class="py-5 bg-light border-bottom">
+  <div class="container">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-7">
+        <h2 class="h3 fw-bold mb-3" style="color:#0d3b66;">Qui sommes-nous ?</h2>
+        <p class="text-muted mb-3">
+          COMAR est un acteur majeur de l’assurance en Tunisie. Nous accompagnons nos assurés au quotidien
+          avec des solutions claires, des garanties solides et un service client reconnu.
+        </p>
+        <ul class="mb-4">
+          <li class="mb-2">Réseau d’agences et de partenaires partout en Tunisie</li>
+          <li class="mb-2">Indemnisation rapide et transparente</li>
+          <li class="mb-2">Offres adaptées aux particuliers, professionnels et entreprises</li>
+          <li class="mb-2">Service client à votre écoute : <strong>82 100 001</strong></li>
+        </ul>
+        <div class="d-flex flex-wrap gap-2">
+          
+          <a href="{{ url_for('contact') }}" class="btn btn-outline-primary">
+            <i class="fa-solid fa-envelope me-2"></i>Nous contacter
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="row text-center g-3">
+          <div class="col-6">
+            <div class="p-3 border rounded-3 h-100">
+              <i class="fa-solid fa-shield-halved fa-2x mb-2 text-primary"></i>
+              <div class="fw-semibold">Protection</div>
+              <div class="small text-muted">Des garanties essentielles</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 border rounded-3 h-100">
+              <i class="fa-solid fa-headset fa-2x mb-2 text-primary"></i>
+              <div class="fw-semibold">Accompagnement</div>
+              <div class="small text-muted">Conseillers à vos côtés</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 border rounded-3 h-100">
+              <i class="fa-solid fa-gauge-high fa-2x mb-2 text-primary"></i>
+              <div class="fw-semibold">Réactivité</div>
+              <div class="small text-muted">Traitement rapide</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 border rounded-3 h-100">
+              <i class="fa-solid fa-award fa-2x mb-2 text-primary"></i>
+              <div class="fw-semibold">Confiance</div>
+              <div class="small text-muted">Satisfaction reconnue</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Produits (inchangé) -->
 <section class="py-5 bg-white">
   <div class="container">
     <h2 class="text-center fw-semibold mb-4" style="color:#0d3b66;">
@@ -117,7 +177,6 @@
       </div>
     </div>
 
-    
   </div>
 </section>
 {% endblock %}

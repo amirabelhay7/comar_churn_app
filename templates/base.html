@@ -13,22 +13,12 @@
 
   <style>
     /* Topbar */
-    .topbar {
-      background: #004080;
-      font-size: 0.9rem;
-    }
+    .topbar { background: #004080; font-size: 0.9rem; }
 
     /* Navbar */
-    .navbar {
-      background: #00264d;
-    }
-    .navbar .nav-link {
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    .navbar .nav-link:hover {
-      color: #00c2ff;
-    }
+    .navbar { background: #00264d; }
+    .navbar .nav-link { font-weight: 500; transition: color 0.3s; }
+    .navbar .nav-link:hover { color: #00c2ff; }
 
     /* Hero (par défaut) */
     .hero {
@@ -38,25 +28,13 @@
     }
 
     /* Footer */
-    .comar-footer {
-      background: #001f3f;
-    }
+    .comar-footer { background: #001f3f; }
     .comar-footer a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      transition: all 0.3s;
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); color: white; transition: all 0.3s;
     }
-    .comar-footer a:hover {
-      background: #00c2ff;
-      color: #001f3f;
-      transform: scale(1.1);
-    }
+    .comar-footer a:hover { background: #00c2ff; color: #001f3f; transform: scale(1.1); }
   </style>
 </head>
 <body>
@@ -86,7 +64,6 @@
           <li class="nav-item">
             <a class="nav-link {% if request.path.startswith('/prediction') %}active{% endif %}" href="{{ url_for('index') }}">Prédiction</a>
           </li>
-          
           <li class="nav-item">
             <a class="nav-link {% if request.path == '/contact' %}active{% endif %}" href="{{ url_for('contact') }}">Contact</a>
           </li>
@@ -95,13 +72,26 @@
     </div>
   </nav>
 
+  <!-- Messages flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container mt-3">
+        {% for cat, msg in messages %}
+          <div class="alert alert-{{ 'success' if cat=='success' else ('danger' if cat=='error' else 'info') }} alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
   {% block hero %}
   <!-- Hero par défaut (utilisé par toutes les pages SAUF home.html qui le remplace) -->
   <header class="hero text-center">
     <div class="container">
       <h1 class="display-5 fw-bold">Prédiction du risque de résiliation</h1>
       <p class="lead">Simulez un profil client et obtenez la probabilité estimée de résiliation, la classe et une CLV indicative.</p>
-      
     </div>
   </header>
   {% endblock %}

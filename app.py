@@ -3,6 +3,8 @@ import pandas as pd
 import joblib
 import os, smtplib, ssl
 from email.message import EmailMessage
+from email.utils import formataddr
+from secrets import token_urlsafe
 
 # --------------------------
 # Config
@@ -23,17 +25,26 @@ MARGE = 0.30          # pour CLV simplifiée
 # Config e-mail
 MAIL_SERVER   = os.getenv("MAIL_SERVER",   "smtp.gmail.com")
 MAIL_PORT     = int(os.getenv("MAIL_PORT", "587"))
-MAIL_USERNAME = os.getenv("MAIL_USERNAME", "ton.email@gmail.com")
-MAIL_PASSWORD = os.getenv("MAIL_PASSWORD", "MOT_DE_PASSE_APPLI")
-MAIL_TO       = os.getenv("MAIL_TO",       "contact@comar.tn")
+MAIL_USERNAME = os.getenv("MAIL_USERNAME", "amirabelhay34@gmail.com")
+MAIL_PASSWORD = (os.getenv("MAIL_PASSWORD", "arav xlgk wzit frop") or "").replace(" ", "")  # <- sans espaces
+MAIL_TO       = os.getenv("MAIL_TO",       "profeeder12345678@gmail.com")
 MAIL_USE_TLS  = True
 
-def send_mail(subject: str, html_body: str, text_body: str = ""):
+
+def send_mail(subject: str,
+              html_body: str,
+              text_body: str = "",
+              to_address: str = None,
+              reply_to: str = None,
+              from_name: str = None):
     """Envoie un e-mail via SMTP (TLS)."""
     msg = EmailMessage()
-    msg["From"] = MAIL_USERNAME
-    msg["To"] = MAIL_TO
+    # From affiché (le compte réel utilisé reste MAIL_USERNAME)
+    msg["From"] = formataddr((from_name or "COMAR", MAIL_USERNAME))
+    msg["To"] = to_address or MAIL_TO
     msg["Subject"] = subject
+    if reply_to:
+        msg["Reply-To"] = reply_to
     if text_body:
         msg.set_content(text_body)
     msg.add_alternative(html_body, subtype="html")
@@ -72,6 +83,9 @@ def align_columns_to_model(df: pd.DataFrame, expected_cols):
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
+# SECRET_KEY pour sessions/flash
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", token_urlsafe(32))
+
 MODEL_PATH = os.path.join(BASE_DIR, "models", "random_forest_model.pkl")
 try:
     pipe = joblib.load(MODEL_PATH)
@@ -92,6 +106,7 @@ def home():
 # Contact
 @app.route("/contact")
 def contact():
+    sent = request.args.get("sent", type=int)  # récupère ?sent=1 après envoi
     infos = {
         "adresse": "COMAR Avenue Habib Bourguiba 1001 Tunis R.P",
         "tel": "+216 71 340 899",
@@ -100,7 +115,7 @@ def contact():
         "email": "contact@comar.tn",
         "maps_url": "https://www.google.com/maps/search/?api=1&query=COMAR+Avenue+Habib+Bourguiba+1001+Tunis"
     }
-    return render_template("contact.html", infos=infos)
+    return render_template("contact.html", infos=infos, sent=sent)
 
 # Proposition
 @app.route("/proposition", methods=["GET", "POST"])
@@ -144,10 +159,23 @@ def proposition():
         )
 
         subject = f"[COMAR • Proposition] Client {client_id} – risque {proba}% ({classe})"
-        send_mail(subject, html_body=html, text_body=f"Proposition pour client {client_id}")
-        flash("Proposition envoyée à COMAR avec succès ✅", "success")
-        return redirect(url_for("contact", sent=1))
 
+        try:
+            send_mail(
+                subject,
+                html_body=html,
+                text_body=f"Proposition pour client {client_id}",
+                to_address="amirabelhay34@gmail.com",  # destinataire final
+                reply_to=employe_mail,                 # la réponse ira à l’employé
+                from_name=employe_nom                  # nom affiché dans "From"
+            )
+            flash("Proposition envoyée à COMAR avec succès ✅", "success")
+            return redirect(url_for("contact", sent=1))
+        except Exception as e:
+            flash(f"Échec de l’envoi de l’e-mail : {e}", "error")
+            return render_template("proposition.html", errors=["Erreur d’envoi e-mail."], initial=request.form)
+
+    # GET : préremplissage éventuel via query string
     initial = {
         "proba": request.args.get("proba", ""),
         "classe": request.args.get("classe", ""),
